@@ -18,9 +18,9 @@ public class DrawableHelperMixin {
     @Inject(method = "drawCenteredText(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/font/TextRenderer;Ljava/lang/String;III)V", at = @At("HEAD"), cancellable = true)
     private static void RandomStuffMod$drawCenteredText(MatrixStack matrices, TextRenderer textRenderer, String text, int centerX, int y, int color, CallbackInfo ci) {
         int newColor = RandomStuffMod.getColor(
-            RandomStuffMod.CONFIG.rgb.RgbRed(),
-            RandomStuffMod.CONFIG.rgb.RgbGreen(),
-            RandomStuffMod.CONFIG.rgb.RgbBlue(),
+            RandomStuffMod.CONFIG.redgreenblue.RgbRed(),
+            RandomStuffMod.CONFIG.redgreenblue.RgbGreen(),
+            RandomStuffMod.CONFIG.redgreenblue.RgbBlue(),
             255);
         if (Objects.equals(text, RandomStuffMod.MenuString)) {
             ci.cancel();

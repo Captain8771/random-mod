@@ -9,7 +9,7 @@ public class RandomConfigSchema {
     public boolean replaceSplashText = true;
 
     @Nest
-    public RGB rgb = new RGB();
+    public RGB redgreenblue = new RGB();
     public static class RGB {
         @RangeConstraint(min = 0, max = 255)
         public int RgbRed = 85;

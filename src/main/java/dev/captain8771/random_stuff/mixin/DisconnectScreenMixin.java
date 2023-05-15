@@ -11,9 +11,15 @@ import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.multiplayer.report.ReportEnvironment;
 import net.minecraft.client.network.ServerAddress;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.text.Text;
+import org.quiltmc.qsl.registry.impl.sync.client.ClientRegistrySync;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,9 +37,14 @@ public abstract class DisconnectScreenMixin extends Screen {
     @Shadow
     private int reasonHeight;
 
+    @Shadow
+    @Final
+    private Screen parent;
+
     protected DisconnectScreenMixin(Text title) {
         super(title);
     }
+
 
     @Inject(method = "init", at = @At("TAIL"))
     public void RandomStuffMod$init(CallbackInfo ci) {
@@ -44,7 +55,7 @@ public abstract class DisconnectScreenMixin extends Screen {
         }
         ButtonWidget.Builder ReconnectButton = ButtonWidget.builder(Text.literal("Reconnect"), (button) -> {
             ServerAddress serverAddress = ServerAddress.parse(RandomStuffMod.lastServer.address);
-            ConnectScreen.connect(mc.currentScreen, mc, serverAddress, RandomStuffMod.lastServer);
+            ConnectScreen.connect(this.parent, mc, serverAddress, RandomStuffMod.lastServer);
         });
         if (RandomStuffMod.CONFIG.reconnectRelated.reconnectButton()) {
             this.addDrawableChild(ReconnectButton.positionAndSize(this.width / 2 - 100, Math.min(this.height / 2 + this.reasonHeight / 2 + 9, this.height - 30) + 20, 200, 20).build());
@@ -53,15 +64,19 @@ public abstract class DisconnectScreenMixin extends Screen {
         if (RandomStuffMod.CONFIG.reconnectRelated.autoReconnect()) {
             ActionListener taskPerformer = new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
-                    RandomStuffMod.LOGGER.error("hey shithead, it's your code, not the timer");
                     MinecraftClient minecraft = MinecraftClient.getInstance();
                     // check if the type of screen is the same as the current screen
                     if (!(minecraft.currentScreen instanceof DisconnectedScreen)) return;
 
                     ServerAddress serverAddress = ServerAddress.parse(RandomStuffMod.lastServer.address);
+                    ServerInfo serverInfo = RandomStuffMod.lastServer;
 
                     ConnectScreen connectScreen = ConnectScreenAccessor.createConnectScreen(minecraft.currentScreen);
-                    ((ConnectScreenAccessor)connectScreen).callConnect(minecraft, serverAddress, RandomStuffMod.lastServer);
+//                    minecraft.disconnect();
+//                    minecraft.startOnlineMode();
+//                    minecraft.setChatReportContext(ReportEnvironment.create(serverInfo != null ? serverInfo.address : serverAddress.getAddress()));
+                    ClientRegistrySync.restoreSnapshot(minecraft);
+                    ((ConnectScreenAccessor)connectScreen).callConnect(minecraft, serverAddress, serverInfo);
                 }
             };
             Timer timer = new Timer(5000, taskPerformer);
