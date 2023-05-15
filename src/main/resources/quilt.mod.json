@@ -15,7 +15,7 @@
 				"sources": "https://github.com/Captain8771/random-mod"
 			},
 			"icon": "assets/random_stuff/icon.png",
-            "license": "GPL-3.0-only"
+            "license": "MIT"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
