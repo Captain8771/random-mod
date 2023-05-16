@@ -18,6 +18,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.text.Text;
+import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.registry.impl.sync.client.ClientRegistrySync;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -58,7 +59,12 @@ public abstract class DisconnectScreenMixin extends Screen {
             ConnectScreen.connect(this.parent, mc, serverAddress, RandomStuffMod.lastServer);
         });
         if (RandomStuffMod.CONFIG.reconnectRelated.reconnectButton()) {
-            this.addDrawableChild(ReconnectButton.positionAndSize(this.width / 2 - 100, Math.min(this.height / 2 + this.reasonHeight / 2 + 9, this.height - 30) + 20, 200, 20).build());
+            int y = Math.min(this.height / 2 + this.reasonHeight / 2 + 9, this.height - 30) + 20;
+            // check if the 'authme' mod is installed
+            if (QuiltLoader.isModLoaded("authme")) {
+                y += 30;
+            }
+            this.addDrawableChild(ReconnectButton.positionAndSize(this.width / 2 - 100, y, 200, 20).build());
         }
 
         if (RandomStuffMod.CONFIG.reconnectRelated.autoReconnect()) {

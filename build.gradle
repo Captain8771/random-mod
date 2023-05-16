@@ -15,6 +15,17 @@ repositories {
 	// for more information about repositories.
     maven { url 'https://maven.wispforest.io' }
     maven { url 'https://maven.terraformersmc.com/' }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
@@ -40,6 +51,11 @@ dependencies {
     include "io.wispforest:owo-sentinel:${project.owo_version}"
     annotationProcessor modImplementation("io.wispforest:owo-lib:${project.owo_version}")
     modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+
+    if (project.compat_testing == "1") {
+        modImplementation "maven.modrinth:yjgIrBjZ:kHOHwnYe" // AuthMe; 'reconnect' overlaps with 'back to server' button
+        modImplementation "maven.modrinth:9s6osm5g:6XGTNEII" // cloth-config; dependency of AuthMe.
+    }
 }
 
 processResources {
