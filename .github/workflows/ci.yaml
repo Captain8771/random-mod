@@ -6,7 +6,9 @@ on:
             - '*'
 
 jobs:
-    build:
+    build_release:
+        # only execute if the commit message contains "[release]"
+        if: "contains(github.event.head_commit.message, '[release]')"
         environment: build
         runs-on: ubuntu-latest
         steps:
@@ -29,4 +31,27 @@ jobs:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   loaders: quilt
                   files: build/libs/!(*-@(dev|sources|all)).jar
+
+    build_alpha:
+        # don't execute for release commits
+        if: "!contains(github.event.head_commit.message, '[release]')"
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-java@v3
+              with:
+                  distribution: 'temurin'
+                  java-version: '17'
+
+            # run gradle build
+            - name: Build with Gradle
+              run: ./gradlew build
+
+            - name: upload to modrinth
+              uses: Kir-Antipov/mc-publish@v3.2
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  loaders: quilt
+                  files: build/libs/!(*-@(dev|sources|all)).jar
                   version-type: alpha
+                  name: "[PRE-RELEASE] ${{ github.event.head_commit.message }}"
