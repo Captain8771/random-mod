@@ -36,12 +36,10 @@ public class TitleScreenMixin {
             } else {
                 int index = forceQuoteChoices.ordinal() - 2;
                 String pulledString = RandomStuffMod.Quotes[index % RandomStuffMod.Quotes.length];
-                if (pulledString.contains("{USER}")) {
-                    pulledString = pulledString.replace("{USER}", client.getSession().getUsername());
-                }
                 RandomStuffMod.MenuString += " ({})".replace("{}", pulledString);
             }
 
+            RandomStuffMod.MenuString = RandomStuffMod.MenuString.replace("{USER}", client.getSession().getUsername());
             this.splashText = RandomStuffMod.MenuString;
         } else {
             this.splashText = client.getSplashTextLoader().get();
