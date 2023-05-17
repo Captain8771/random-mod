@@ -1,6 +1,9 @@
 package dev.captain8771.random_stuff;
 
 import io.wispforest.owo.config.annotation.*;
+import io.wispforest.owo.ui.core.Color;
+
+import java.util.Random;
 
 @Modmenu(modId = "random_stuff")
 @Config(name = "random_stuff", wrapperName = "RandomStuffConfig")
@@ -8,16 +11,7 @@ public class RandomConfigSchema {
     @SectionHeader("splash-config")
     public boolean replaceSplashText = true;
 
-    @Nest
-    public RGB redgreenblue = new RGB();
-    public static class RGB {
-        @RangeConstraint(min = 0, max = 255)
-        public int RgbRed = 85;
-        @RangeConstraint(min = 0, max = 255)
-        public int RgbGreen = 255;
-        @RangeConstraint(min = 0, max = 255)
-        public int RgbBlue = 255;
-    }
+    public Color RGB = Color.ofRgb(RandomStuffMod.getColor(85, 255, 255, 255));
 
     public forceQuoteChoices forceQuote = forceQuoteChoices.RANDOM;
     public enum forceQuoteChoices {
