@@ -58,7 +58,7 @@ public abstract class DisconnectScreenMixin extends Screen {
         if (Objects.isNull(RandomStuffMod.lastServer)) {
             return;
         }
-        ButtonWidget.Builder ReconnectButton = ButtonWidget.builder(Text.literal("Reconnect"), (button) -> {
+        ButtonWidget.Builder ReconnectButton = ButtonWidget.builder(Text.translatable("gui.random_stuff.button.reconnect"), (button) -> {
             ServerAddress serverAddress = ServerAddress.parse(RandomStuffMod.lastServer.address);
             ConnectScreen.connect(this.parent, mc, serverAddress, RandomStuffMod.lastServer);
         });

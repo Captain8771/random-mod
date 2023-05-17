@@ -32,10 +32,10 @@ public class TitleScreenMixin {
             } else if (forceQuoteChoices.equals(RandomConfigSchema.forceQuoteChoices.RANDOM)) {
                 Random rand = new Random();
                 int randInt = rand.nextInt(RandomStuffMod.Quotes.length);
-                RandomStuffMod.MenuString += " ({})".replace("{}", RandomStuffMod.Quotes[randInt]);
+                RandomStuffMod.MenuString += " ({})".replace("{}", RandomStuffMod.Quotes[randInt].getString());
             } else {
                 int index = forceQuoteChoices.ordinal() - 2;
-                String pulledString = RandomStuffMod.Quotes[index % RandomStuffMod.Quotes.length];
+                String pulledString = RandomStuffMod.Quotes[index % RandomStuffMod.Quotes.length].getString();
                 RandomStuffMod.MenuString += " ({})".replace("{}", pulledString);
             }
 

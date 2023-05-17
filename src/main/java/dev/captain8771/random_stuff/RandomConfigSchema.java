@@ -30,7 +30,6 @@ public class RandomConfigSchema {
         THE_IRS_IS_AT_MY_DOOR,
         THE_FBI_IS_AT_MY_DOOR,
         LGBTQ_RIGHTS,
-        FUCKING_POLITICS,
         ITS_RAINING_SOMEWHERE_ELSE,
         I_GOT_TOO_SILLY_WITH_THIS_MOD,
         NAAMLOOS_WAS_HERE,
