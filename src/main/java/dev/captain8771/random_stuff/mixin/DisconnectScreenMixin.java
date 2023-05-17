@@ -42,6 +42,10 @@ public abstract class DisconnectScreenMixin extends Screen {
     @Final
     private Screen parent;
 
+    @Shadow
+    @Final
+    private Text reason;
+
     protected DisconnectScreenMixin(Text title) {
         super(title);
     }
@@ -62,7 +66,27 @@ public abstract class DisconnectScreenMixin extends Screen {
             int y = Math.min(this.height / 2 + this.reasonHeight / 2 + 9, this.height - 30) + 20;
             // check if the 'authme' mod is installed
             if (QuiltLoader.isModLoaded("authme")) {
-                y += 30;
+                boolean shouldMove = false;
+                // seems to be possible to get the other buttons using this function: https://github.com/axieum/authme/blob/main/src/main/java/me/axieum/mcmod/authme/mixin/DisconnectedScreenMixin.java#L53
+
+                // array of any type
+                Object[] buttons = children().toArray();
+
+                for (Object button : buttons) {
+                    if (button instanceof ButtonWidget btn) {
+                        // check if the key is "gui.authme.button.relogin"
+                        if (Objects.equals(btn.getMessage().getString(), Text.translatable("gui.authme.button.relogin").getString())) {
+                            shouldMove = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldMove) {
+                    y += 30;
+                }
+
+
             }
             this.addDrawableChild(ReconnectButton.positionAndSize(this.width / 2 - 100, y, 200, 20).build());
         }
