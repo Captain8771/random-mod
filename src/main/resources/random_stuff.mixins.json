@@ -9,9 +9,9 @@
     "client": [
         "DeathScreenMixin",
         "DisconnectScreenMixin",
-        "DrawableHelperMixin",
+        "GuiGraphicsMixin",
         "MultiplayerScreenMixin",
-        "TitleScreenMixin"
+        "SplashTextRendererMixin"
     ],
     "injectors": {
         "defaultRequire": 1

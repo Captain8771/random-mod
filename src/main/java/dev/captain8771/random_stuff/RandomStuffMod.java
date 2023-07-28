@@ -1,5 +1,6 @@
 package dev.captain8771.random_stuff;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
@@ -7,6 +8,8 @@ import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Random;
 
 public class RandomStuffMod implements ModInitializer {
     public static ServerInfo lastServer;
@@ -36,12 +39,39 @@ public class RandomStuffMod implements ModInitializer {
         Text.translatable("gui.random_stuff.splash.20")
     };
 
+    public static String getQuote() {
+        MinecraftClient client = MinecraftClient.getInstance();
+        String returnText = RandomStuffMod.MenuStringBase;
+        RandomConfigSchema.forceQuoteChoices forceQuoteChoices = RandomStuffMod.CONFIG.forceQuote();
+
+        switch (forceQuoteChoices) {
+            case NOQUOTE:
+                // :3
+                break;
+            case RANDOM:
+                Random rand = new Random();
+                int randInt = rand.nextInt(RandomStuffMod.Quotes.length);
+                returnText += " ({})".replace("{}", RandomStuffMod.Quotes[randInt].getString());
+                break;
+            default:
+                int index = forceQuoteChoices.ordinal() - 2;
+                String pulledString = RandomStuffMod.Quotes[index % RandomStuffMod.Quotes.length].getString();
+                returnText += " ({})".replace("{}", pulledString);
+                break;
+        }
+
+        returnText = returnText.replace("{USER}", client.getSession().getUsername());
+        RandomStuffMod.MenuString = returnText;
+        return returnText;
+    }
+
     public static final dev.captain8771.random_stuff.RandomStuffConfig CONFIG = dev.captain8771.random_stuff.RandomStuffConfig.createAndLoad();
 
     @Override
     public void onInitialize(ModContainer mod) {
-        LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
-
+        // LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
+        // i must say i have no idea how i missed this line when i was making the mod
+        // oh well
     }
 
     public static int getColor(int red, int green, int blue, int alpha) {

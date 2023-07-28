@@ -1,4 +1,7 @@
 {
+    "modmenu.nameTranslation.random_stuff.nameTranslation":                                          "Cap's random stuff",
+    "modmenu.nameTranslation.random_stuff.summaryTranslation":                                       "Random stuff",
+    "modmenu.nameTranslation.random_stuff.descriptionTranslation":                                   "This mod is mostly preferences Erik (me, Captain) has for Minecraft. It's also my first quilt mod!",
     "text.config.random_stuff.title":                                                                "Random Stuff",
     "text.config.random_stuff.section.splash-config":                                                "Splash config",
     "text.config.random_stuff.option.replaceSplashText":                                             "Replace splash text",

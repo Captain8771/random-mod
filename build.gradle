@@ -53,7 +53,7 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 
     if (project.compat_testing == "1") {
-        modImplementation "maven.modrinth:yjgIrBjZ:kHOHwnYe" // AuthMe; 'reconnect' overlaps with 'back to server' button
+        modImplementation "maven.modrinth:yjgIrBjZ:RiTU8rGC" // AuthMe; 'reconnect' overlaps with 'back to server' button
         modImplementation "maven.modrinth:9s6osm5g:6XGTNEII" // cloth-config; dependency of AuthMe.
     }
 }
